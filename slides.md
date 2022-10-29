@@ -582,3 +582,128 @@ tom.id = 9527;
 
 # 数组的类型
 
+TypeScript 中数组类型有多种定义方式，比较灵活。
+
+```ts {monaco}
+let fibonacci: number[] = [1, 1, 2, 3, 5]; //「类型 + 方括号」
+
+interface NumberArray {
+    [index: number]: number;
+}
+let fibonacci: NumberArray = [1, 1, 2, 3, 5]; // 用接口表示数组
+
+let fibonacci: Array<number> = [1, 1, 2, 3, 5]; //数组泛型
+```
+
+---
+
+# 函数的类型
+
+1. 函数声明
+```ts {monaco}
+function sum(x: number, y: number): number {
+    return x + y;
+}
+//输入多余的（或者少于要求的）参数，是不被允许的
+```
+2. 函数表达式
+js中我们这样
+```js
+let mySum = function (x: number, y: number): number {
+    return x + y;
+};
+```
+```ts
+let mySum: (x: number, y: number) => number = function (x: number, y: number): number {
+    return x + y;
+};
+```
+
+3. 用接口定义函数的形状
+
+```ts {monaco}
+interface SearchFunc {
+    (source: string, subString: string): boolean;
+}
+
+let mySearch: SearchFunc;
+mySearch = function (source: string, subString: string) {
+    return source.search(subString) !== -1;
+}
+```
+
+---
+
+# 可选参数
+
+前面提到，输入多余的（或者少于要求的）参数，是不允许的。那么如何定义可选的参数呢？  
+```ts
+function buildName(firstName: string, lastName?: string) {
+    if (lastName) {
+        return firstName + ' ' + lastName;
+    } else {
+        return firstName;
+    }
+}
+let tomcat = buildName('Tom', 'Cat');
+let tom = buildName('Tom');
+```  
+
+> 可选参数后面不允许再出现必需参数
+
+```ts
+function buildName(firstName?: string, lastName: string) {
+    if (firstName) {
+        return firstName + ' ' + lastName;
+    } else {
+        return lastName;
+    }
+}
+let tomcat = buildName('Tom', 'Cat');
+let tom = buildName(undefined, 'Tom');
+// index.ts(1,40): error TS1016: A required parameter cannot follow an optional parameter.
+```
+---
+
+# 参数默认值
+
+> 我们允许给函数的参数添加默认值，TypeScript 会将添加了默认值的参数识别为可选参数
+
+```ts
+function buildName(firstName: string, lastName: string = 'Cat') {
+    return firstName + ' ' + lastName;
+}
+let tomcat = buildName('Tom', 'Cat');
+let tom = buildName('Tom');
+```
+此时就不受「可选参数必须接在必需参数后面」的限制了：
+```ts
+function buildName(firstName: string = 'Tom', lastName: string) {
+    return firstName + ' ' + lastName;
+}
+let tomcat = buildName('Tom', 'Cat');
+let cat = buildName(undefined, 'Cat');
+```
+---
+
+# 剩余参数
+ES6 中，可以使用 ...rest 的方式获取函数中的剩余参数（rest 参数）
+```ts
+function push(array, ...items) {
+    items.forEach(function(item) {
+        array.push(item);
+    });
+}
+
+let a: any[] = [];
+push(a, 1, 2, 3);
+// 事实上，items 是一个数组。所以我们可以用数组的类型来定义它：
+function push(array: any[], ...items: any[]) {
+    items.forEach(function(item) {
+        array.push(item);
+    });
+}
+
+let a = [];
+push(a, 1, 2, 3);
+```
