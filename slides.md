@@ -334,9 +334,9 @@ something = 7;
 </div>
 <div v-click class="text-yellow-500">
 
-any是TS留给不熟悉TS类型的开发者的⼀个hack通道，使⽤any是⼀个⾮常危险的事情，会导致类
-型丢失，这些是⽆法预测的安全隐患，请不要在项⽬⾥⼤量使⽤any，如果可以，请使⽤
-unknown代替
+any 是 TS 留给不熟悉 TS 类型的开发者的⼀个 hack 通道，使⽤ any 是⼀个⾮常危险的事情，会导致类
+型丢失，这些是⽆法预测的安全隐患，请不要在项⽬⾥⼤量使⽤ any，如果可以，请使⽤
+unknown 代替
 
 </div>
 
@@ -432,6 +432,7 @@ T25 = "123"; // error
 ```
 
 如果定义的时候没有赋值，不管之后有没有赋值，都会被推断成 any 类型而完全不被类型检查：
+
 ```ts {monaco}
 let T26;
 T26 = 123;
@@ -443,66 +444,76 @@ T26 = "123";
 # 联合类型
 
 联合类型（Union Types）表示取值可以为多种类型中的一种。联合类型使用 | 分隔每个类型。
+
 <div class="overflow-y-auto h-100">
 
 ```ts {monaco}
-let T27:string | number;
+let T27: string | number;
 T27 = 123;
 T27 = "123";
 T27 = true; // error
 ```
 
 当 TypeScript 不确定一个联合类型的变量到底是哪个类型的时候，我们只能访问此联合类型的所有类型里共有的属性或方法：
+
 ```ts {monaco}
 function getLength(something: string | number): number {
-    return something.length;
+  return something.length;
 }
 
 // index.ts(2,22): error TS2339: Property 'length' does not exist on type 'string | number'.
 //   Property 'length' does not exist on type 'number'.
 ```
+
 上例中，length 不是 string 和 number 的共有属性，所以会报错。
 访问 string 和 number 的共有属性是没问题的：
+
 ```ts {monaco}
 function getString(something: string | number): string {
-    return something.toString();
+  return something.toString();
 }
 ```
+
 联合类型的变量在被赋值的时候，会根据类型推论的规则推断出一个类型：
+
 ```ts {monaco}
 let myFavoriteNumber: string | number;
-myFavoriteNumber = 'seven';
+myFavoriteNumber = "seven";
 console.log(myFavoriteNumber.length); // 5
 myFavoriteNumber = 7;
 console.log(myFavoriteNumber.length); // 编译时报错
 
 // index.ts(5,30): error TS2339: Property 'length' does not exist on type 'number'.
 ```
+
 上例中，第二行的 myFavoriteNumber 被推断成了 string，访问它的 length 属性不会报错。
 
 而第四行的 myFavoriteNumber 被推断成了 number，访问它的 length 属性时就报错了。
+
 </div>
 
 ---
 
 # 对象的类型——接口
 
-TypeScript 的核心原则之一是对值所具有的结构进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。 
->当你看到⼀个对象，它看起来像鸭⼦，吃起来像鸭⼦，⾛路也像鸭⼦，那你就可以把它当成鸭⼦
+TypeScript 的核心原则之一是对值所具有的结构进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。
+
+> 当你看到⼀个对象，它看起来像鸭⼦，吃起来像鸭⼦，⾛路也像鸭⼦，那你就可以把它当成鸭⼦
 
 在 TypeScript 里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。
 
 ```ts {monaco}
 interface Person {
-    name: string;
-    age: number;
+  name: string;
+  age: number;
 }
 
 let tom: Person = {
-    name: 'Tom',
-    age: 25
+  name: "Tom",
+  age: 25,
 };
 ```
+
 上面的例子中，我们定义了一个接口 Person，接着定义了一个变量 tom，它的类型是 Person。这样，我们就约束了 tom 的形状必须和接口 Person 一致。
 
 1. 多一些属性不行；
@@ -518,17 +529,17 @@ let tom: Person = {
 
 ```ts {monaco}
 interface Person {
-    name: string;
-    age?: number;
+  name: string;
+  age?: number;
 }
 
 let tom: Person = {
-    name: 'Tom'
+  name: "Tom",
 };
 
 let tom2: Person = {
-    name: 'Tom',
-    age: 25
+  name: "Tom",
+  age: 25,
 };
 ```
 
@@ -540,19 +551,21 @@ let tom2: Person = {
 
 ```ts {monaco}
 interface Person {
-    name: string;
-    age?: number;
-    [propName: string]: any;
+  name: string;
+  age?: number;
+  [propName: string]: any;
 }
 
 let tom: Person = {
-    name: 'Tom',
-    age: 25,
-    gender: 'male'
+  name: "Tom",
+  age: 25,
+  gender: "male",
 };
 ```
+
 使用 [propName: string] 定义了任意属性取 string 类型的值。
-> 如果同时存在任意属性、可选属性，那么任意属性的数据类型要带undefined
+
+> 如果同时存在任意属性、可选属性，那么任意属性的数据类型要带 undefined
 
 ---
 
@@ -562,20 +575,21 @@ let tom: Person = {
 
 ```ts {monaco}
 interface Person {
-    readonly id: number;
-    name: string;
-    age?: number;
-    [propName: string]: any;
+  readonly id: number;
+  name: string;
+  age?: number;
+  [propName: string]: any;
 }
 
 let tom: Person = {
-    id: 89757,
-    name: 'Tom',
-    gender: 'male'
+  id: 89757,
+  name: "Tom",
+  gender: "male",
 };
 
 tom.id = 9527;
 ```
+
 使用 readonly 定义的属性 id 初始化后，又被赋值了，所以报错了。
 
 ---
@@ -588,7 +602,7 @@ TypeScript 中数组类型有多种定义方式，比较灵活。
 let fibonacci: number[] = [1, 1, 2, 3, 5]; //「类型 + 方括号」
 
 interface NumberArray {
-    [index: number]: number;
+  [index: number]: number;
 }
 let fibonacci: NumberArray = [1, 1, 2, 3, 5]; // 用接口表示数组
 
@@ -600,69 +614,78 @@ let fibonacci: Array<number> = [1, 1, 2, 3, 5]; //数组泛型
 # 函数的类型
 
 1. 函数声明
-```ts {monaco}
+
+```ts
 function sum(x: number, y: number): number {
-    return x + y;
+  return x + y;
 }
 //输入多余的（或者少于要求的）参数，是不被允许的
 ```
+
 2. 函数表达式
-js中我们这样
+   js 中我们这样
+
 ```js
 let mySum = function (x: number, y: number): number {
-    return x + y;
+  return x + y;
 };
 ```
+
 ```ts
-let mySum: (x: number, y: number) => number = function (x: number, y: number): number {
-    return x + y;
+let mySum: (x: number, y: number) => number = function (
+  x: number,
+  y: number
+): number {
+  return x + y;
 };
 ```
 
 3. 用接口定义函数的形状
 
-```ts {monaco}
+```ts
 interface SearchFunc {
-    (source: string, subString: string): boolean;
+  (source: string, subString: string): boolean;
 }
 
 let mySearch: SearchFunc;
 mySearch = function (source: string, subString: string) {
-    return source.search(subString) !== -1;
-}
+  return source.search(subString) !== -1;
+};
 ```
 
 ---
 
 # 可选参数
 
-前面提到，输入多余的（或者少于要求的）参数，是不允许的。那么如何定义可选的参数呢？  
+前面提到，输入多余的（或者少于要求的）参数，是不允许的。那么如何定义可选的参数呢？
+
 ```ts
 function buildName(firstName: string, lastName?: string) {
-    if (lastName) {
-        return firstName + ' ' + lastName;
-    } else {
-        return firstName;
-    }
+  if (lastName) {
+    return firstName + " " + lastName;
+  } else {
+    return firstName;
+  }
 }
-let tomcat = buildName('Tom', 'Cat');
-let tom = buildName('Tom');
-```  
+let tomcat = buildName("Tom", "Cat");
+let tom = buildName("Tom");
+```
 
 > 可选参数后面不允许再出现必需参数
 
 ```ts
 function buildName(firstName?: string, lastName: string) {
-    if (firstName) {
-        return firstName + ' ' + lastName;
-    } else {
-        return lastName;
-    }
+  if (firstName) {
+    return firstName + " " + lastName;
+  } else {
+    return lastName;
+  }
 }
-let tomcat = buildName('Tom', 'Cat');
-let tom = buildName(undefined, 'Tom');
+let tomcat = buildName("Tom", "Cat");
+let tom = buildName(undefined, "Tom");
 // index.ts(1,40): error TS1016: A required parameter cannot follow an optional parameter.
 ```
+
 ---
 
 # 参数默认值
@@ -670,40 +693,203 @@ let tom = buildName(undefined, 'Tom');
 > 我们允许给函数的参数添加默认值，TypeScript 会将添加了默认值的参数识别为可选参数
 
 ```ts
-function buildName(firstName: string, lastName: string = 'Cat') {
-    return firstName + ' ' + lastName;
+function buildName(firstName: string, lastName: string = "Cat") {
+  return firstName + " " + lastName;
 }
-let tomcat = buildName('Tom', 'Cat');
-let tom = buildName('Tom');
+let tomcat = buildName("Tom", "Cat");
+let tom = buildName("Tom");
 ```
+
 此时就不受「可选参数必须接在必需参数后面」的限制了：
+
 ```ts
-function buildName(firstName: string = 'Tom', lastName: string) {
-    return firstName + ' ' + lastName;
+function buildName(firstName: string = "Tom", lastName: string) {
+  return firstName + " " + lastName;
 }
-let tomcat = buildName('Tom', 'Cat');
-let cat = buildName(undefined, 'Cat');
+let tomcat = buildName("Tom", "Cat");
+let cat = buildName(undefined, "Cat");
 ```
+
 ---
 
 # 剩余参数
-ES6 中，可以使用 ...rest 的方式获取函数中的剩余参数（rest 参数）
+
+ES6 中，可以使用 ...rest 的方式获取函数中的剩余参数（rest 参数），但是只能是最后一个参数
+
 ```ts
 function push(array, ...items) {
-    items.forEach(function(item) {
-        array.push(item);
-    });
+  items.forEach(function (item) {
+    array.push(item);
+  });
 }
 
 let a: any[] = [];
 push(a, 1, 2, 3);
 // 事实上，items 是一个数组。所以我们可以用数组的类型来定义它：
 function push(array: any[], ...items: any[]) {
-    items.forEach(function(item) {
-        array.push(item);
-    });
+  items.forEach(function (item) {
+    array.push(item);
+  });
 }
 
 let a = [];
 push(a, 1, 2, 3);
+```
+
+---
+
+# 字符串字面量类型
+
+字符串字面量类型用来约束取值只能是某几个字符串中的一个。
+
+```ts
+type EventNames = "click" | "scroll" | "mousemove";
+function handleEvent(ele: Element, event: EventNames) {
+  // do something
+}
+
+handleEvent(document.getElementById("hello"), "scroll"); // 没问题
+handleEvent(document.getElementById("world"), "dblclick"); // 报错，event 不能为 'dblclick'
+
+// index.ts(7,47): error TS2345: Argument of type '"dblclick"' is not assignable to parameter of type 'EventNames'.
+```
+
+开发中常见的比如 ELement ui 的 button，有 default、primary、info、danger 等几种类型
+
+---
+
+# 元组
+
+数组合并了相同类型的对象，而元组（Tuple）合并了不同类型的对象。
+元组起源于函数编程语言（如 F#），这些语言中会频繁使用元组。
+
+```ts {monaco}
+let tom: [string, number] = ["Tom", 25];
+```
+
+当赋值或访问一个已知索引的元素时，会得到正确的类型：
+
+```ts
+let tom: [string, number];
+tom[0] = "Tom";
+tom[1] = 25;
+
+tom[0].slice(1);
+tom[1].toFixed(2);
+```
+
+---
+
+# 枚举
+
+枚举（Enum）类型用于取值被限定在一定范围内的场景，比如一周只能有七天，颜色限定为红绿蓝等。
+
+```ts {monaco}
+enum Days {
+  Sun,
+  Mon,
+  Tue,
+  Wed,
+  Thu,
+  Fri,
+  Sat,
+}
+
+console.log(Days["Sun"] === 0); // true
+console.log(Days["Mon"] === 1); // true
+console.log(Days["Tue"] === 2); // true
+console.log(Days["Sat"] === 6); // true
+
+console.log(Days[0] === "Sun"); // true
+console.log(Days[1] === "Mon"); // true
+console.log(Days[2] === "Tue"); // true
+console.log(Days[6] === "Sat"); // true
+```
+
+枚举成员会被赋值为从 0 开始递增的数字，同时也会对枚举值到枚举名进行反向映射
+
+---
+
+# 泛型
+
+泛型（Generics）是指在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定类型的一种特性。
+
+```ts
+function createArray(length: number, value: any): Array<any> {
+  let result = [];
+  for (let i = 0; i < length; i++) {
+    result[i] = value;
+  }
+  return result;
+}
+
+createArray(3, "x"); // ['x', 'x', 'x']
+```
+
+createArray，它可以创建一个指定长度的数组，同时将每一项都填充一个默认值，
+这段代码编译不会报错，但是一个显而易见的缺陷是，它并没有准确的定义返回值的类型
+
+---
+
+使用泛型
+
+```ts
+function createArray<T>(length: number, value: T): Array<T> {
+  let result: T[] = [];
+  for (let i = 0; i < length; i++) {
+    result[i] = value;
+  }
+  return result;
+}
+
+createArray<string>(3, "x"); // ['x', 'x', 'x']
+```
+
+我们在函数名后添加了 <T>，其中 T 用来指代任意输入的类型，在后面的输入 value: T 和输出 Array<T> 中即可使用了。
+我们把 T 叫做类型变量。
+
+---
+
+# 多个类型参数
+
+定义泛型的时候，可以一次定义多个类型参数：
+
+```ts
+function swap<T, U>(tuple: [T, U]): [U, T] {
+  return [tuple[1], tuple[0]];
+}
+
+swap([7, "seven"]); // ['seven', 7]
+```
+
+---
+
+# 泛型约束
+
+在函数内部使用泛型变量的时候，由于事先不知道它是哪种类型，所以不能随意的操作它的属性或方法：
+
+```ts
+function loggingIdentity<T>(arg: T): T {
+  console.log(arg.length);
+  return arg;
+}
+
+// index.ts(2,19): error TS2339: Property 'length' does not exist on type 'T'.
+```
+
+上例中，泛型 T 不一定包含属性 length，所以编译的时候报错了。
+
+这时，我们可以对泛型进行约束，只允许这个函数传入那些包含 length 属性的变量。这就是泛型约束：
+
+---
+
+```ts
+interface Lengthwise {
+  length: number;
+}
+
+function loggingIdentity<T extends Lengthwise>(arg: T): T {
+  console.log(arg.length);
+  return arg;
+}
 ```
