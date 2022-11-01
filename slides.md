@@ -12,7 +12,7 @@ highlighter: shiki
 lineNumbers: true
 # some information about the slides, markdown enabled
 info: |
-  ## TypeScript 在 Vue 中的使用
+  ## TypeScript
 
   Learn more at [Sli.dev](https://sli.dev)
 # persist drawings in exports and build
@@ -22,12 +22,9 @@ drawings:
 css: unocss
 ---
 
-# TypeScript 分享
-
-<vscode-icons-file-type-typescript-official/> <vscode-icons-file-type-vue/>TypeScript 及其在 Vue.js 中的使用
+# TypeScript 简单分享（上）
 
 <vscode-icons-file-type-typescript-official class="fixed text-100px left-10 top-5"/>
-<vscode-icons-file-type-vue class="fixed text-100px right-10 top-5"/>
 <div class="text-gray-400">-- 朱晓东 2022/11/01</div>
 
 <div class="pt-12">
@@ -831,7 +828,7 @@ createArray，它可以创建一个指定长度的数组，同时将每一项都
 
 ---
 
-使用泛型
+# 使用泛型
 
 ```ts
 function createArray<T>(length: number, value: T): Array<T> {
@@ -845,8 +842,8 @@ function createArray<T>(length: number, value: T): Array<T> {
 createArray<string>(3, "x"); // ['x', 'x', 'x']
 ```
 
-我们在函数名后添加了 <T>，其中 T 用来指代任意输入的类型，在后面的输入 value: T 和输出 Array<T> 中即可使用了。
-我们把 T 叫做类型变量。
+我们在函数名后添加了``` <T>```，其中``` T ```用来指代任意输入的类型，在后面的输入``` value: T ```和输出 Array```<T> ```中即可使用了。
+我们把``` T ```叫做类型变量。
 
 ---
 
