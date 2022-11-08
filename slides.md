@@ -20,8 +20,8 @@ drawings:
   persist: false
 # use UnoCSS
 css: unocss
-# monaco
-monaco:true
+monaco: true
+
 ---
 
 # TypeScript 简单分享（上）
