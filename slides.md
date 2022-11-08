@@ -20,6 +20,7 @@ drawings:
   persist: false
 # use UnoCSS
 css: unocss
+# monaco
 monaco:true
 ---
 
